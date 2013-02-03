@@ -1,0 +1,17 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+
+[jnt:widgetsRenderer] > jmix:siteComponent, jnt:content, mix:title
+ - columns (long) = 3 autocreated
+ + column1 (jnt:contentList) = jnt:contentList autocreated
+ + column2 (jnt:contentList) = jnt:contentList autocreated
+ + column3 (jnt:contentList) = jnt:contentList autocreated
+ + column4 (jnt:contentList) = jnt:contentList autocreated
+ + column5 (jnt:contentList) = jnt:contentList autocreated
+ - j:subNodesView (string, choicelist[templates=jnt:contentList,resourceBundle,image]) nofulltext
+
+[jnt:widgetsCustomizer] > jmix:siteComponent, jnt:content
+ - componentsFolder (weakreference, picker) < jnt:contentFolder
+ - customizeLabel (String) = 'Customize' i18n indexed=no
+
+[jnt:userWidgetsRenderer] > jmix:siteComponent, jnt:content
+ - defaultWidget (weakreference, picker[type="widgetsRenderer"]) < jnt:widgetsRenderer

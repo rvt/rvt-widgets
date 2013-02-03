@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="widgetsRendererpicker" parent="abstractmanager">
+        <property name="nodeTypes" value="jnt:widgetsRenderer"/>
+
+        <property name="folderTypes">
+            <list>
+                <value>jnt:page</value>
+                <value>jnt:virtualsite</value>
+                <value>jnt:contentList</value>
+                <value>jnt:contentFolder</value>
+                <value>nt:folder</value>
+            </list>
+        </property>
+
+        <property name="toolbars">
+            <bean class="org.jahia.services.uicomponents.bean.toolbar.Toolbar">
+                <property name="items">
+                    <list/>
+                </property>
+            </bean>
+        </property>
+        <property name="contextMenu">
+            <bean class="org.jahia.services.uicomponents.bean.toolbar.Toolbar">
+                <property name="items">
+                    <list/>
+                </property>
+            </bean>
+        </property>
+        <property name="displaySearchInPage" value="false"/>
+        <property name="displaySearchInContent" value="false"/>
+        <property name="displaySearchInFile" value="false"/>
+        <property name="displaySearchInTag" value="true"/>
+        <property name="searchInContent" value="true"/>
+        <property name="searchInFile" value="false"/>
+        <property name="allowsMultipleSelection" value="false"/>
+        <property name="hideLeftPanel" value="true"/>
+        <property name="defaultView" value="detailed"/>
+        <!-- accordion panels-->
+        <property name="repositories">
+            <list>
+                <ref bean="repository.site"/>
+            </list>
+        </property>
+
+        <!-- table columns-->
+        <property name="tableColumns">
+            <list value-type="org.jahia.services.uicomponents.bean.contentmanager.Column">
+                <value>icon,40,empty</value>
+                <value>name,*,label.name</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>
