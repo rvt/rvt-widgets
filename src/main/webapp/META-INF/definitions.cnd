@@ -12,6 +12,7 @@
 [jnt:widgetsCustomizer] > jmix:siteComponent, jnt:content
  - componentsFolder (weakreference, picker) < jnt:contentFolder
  - customizeLabel (String) = 'Customize' i18n indexed=no
+ - customizePopupText (string, richtext) i18n indexed=no
 
 [jnt:userWidgetsRenderer] > jmix:siteComponent, jnt:content
  - defaultWidget (weakreference, picker[type="widgetsRenderer"]) < jnt:widgetsRenderer

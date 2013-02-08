@@ -26,9 +26,6 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 $(".customizeWidget").colorbox();
-            });
-
-            $(document).ready(function () {
                 iNettuts.addWidgetControls();
                 iNettuts.makeSortable();
             });

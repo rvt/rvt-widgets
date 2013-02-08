@@ -6,13 +6,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ui" uri="http://www.jahia.org/tags/uiComponentsLib" %>
 
+<%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
+
 <jcr:node path="${param['path']}" var="widgets"/>
 <template:addCacheDependency flushOnPathMatchingRegexp="\Q${widgets.path}\E/.*"/>
 
-<c:set var="boundComponent" value="${ui:getBindedComponent(currentNode, renderContext, 'j:bindedComponent')}"/>
-
 <div class="allWidgets">
-    <h3><fmt:message key="label.widget.addComponents"/></h3>
+    <c:if test="${not empty currentNode.properties.customizePopupText}">
+        ${currentNode.properties.customizePopupText.string}
+    </c:if>
+    <c:if test="${empty currentNode.properties.customizePopupText}">
+        <h3><fmt:message key="label.widget.addComponents"/></h3>
+    </c:if>
     <c:forEach items="${widgets.nodes}" var="node" varStatus="status">
         <c:if test="${!jcr:isNodeType(node, 'jnt:acl' )}">
             <c:if test="${jcr:isNodeType(node, 'jmix:nodeReference')}">
