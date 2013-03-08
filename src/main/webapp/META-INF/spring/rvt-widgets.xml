@@ -8,8 +8,4 @@
         <property name="name" value="assignWidget"/>
         <property name="contentManager" ref="ContentManagerHelper"/>
     </bean>
-
-    <bean class="org.jahia.modules.rvtwidgets.CloneWidgets">
-        <property name="name" value="cloneWidgets"/>
-    </bean>
 </beans>
