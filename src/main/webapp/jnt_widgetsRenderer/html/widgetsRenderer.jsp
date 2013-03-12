@@ -10,16 +10,18 @@
 
 
 <c:set var="writeable" value="${currentResource.workspace eq 'live'}"/>
-<c:set var="writeable" value="true"/>
 
 <c:set target="${moduleMap}" property="subNodesView" value="${currentNode.properties['j:subNodesView'].string}"/>
 <c:if test="${empty moduleMap.subNodesView}">
     <c:set target="${moduleMap}" property="subNodesView" value="widget"/>
 </c:if>
 
+<c:if test="${not writeable}">
+    <fmt:message key="label.widget.only.live"/>
+</c:if>
+
 <template:addResources type="css" resources="jquery.colorbox.css,widgets.css"/>
 
-<c:if test="${writeable}">
     <template:addResources type="javascript"
                            resources="jquery.js,jquery-ui.min.js,inettuts.portal.js,ajaxreplace.js,jquery.colorbox.js"/>
 
@@ -50,14 +52,13 @@
                 <c:set var="last" value=" last"/>
             </c:if>
             <ul id="column${column}" class="column${last}">
+                <%-- Load up a contentList and read each column --%>
                 <template:module path="column${column}" view="${moduleMap.subNodesView}"/>
             </ul>
         </c:forEach>
     </div>
     <div class="clear"></div>
-</c:if>
 
 <c:if test="${not writeable}">
     <template:module path="*" editable="false"/>
-    <fmt:message key="label.widget.only.live"/>
 </c:if>

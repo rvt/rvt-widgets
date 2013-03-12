@@ -14,38 +14,47 @@
 <%--@elvariable id="renderContext" type="org.jahia.services.render.RenderContext"--%>
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
+
+<%-- Renders a single column of widgets --%>
+
 <c:if test="${!renderContext.editMode}">
     <c:forEach items="${currentNode.nodes}" var="subchild">
-        <template:addCacheDependency uuid="${subchild.identifier}"/>
-        <c:if test="${jcr:isNodeType(subchild, 'jmix:nodeReference')}">
-            <template:addCacheDependency uuid="${subchild.properties['j:node'].string}"/>
-            <c:set var="subSubChild" value="${subchild.contextualizedNode}"/>
-            <c:if test="${jcr:isNodeType(subSubChild, 'jmix:nodeReference')}">
-                <template:addCacheDependency uuid="${subSubChild.properties['j:node'].string}"/>
+        <c:catch>
+            <template:addCacheDependency uuid="${subchild.identifier}"/>
+            <c:if test="${jcr:isNodeType(subchild, 'jmix:nodeReference')}">
+                <template:addCacheDependency uuid="${subchild.properties['j:node'].string}"/>
+                <c:set var="subSubChild" value="${subchild.contextualizedNode}"/>
+                <c:if test="${jcr:isNodeType(subSubChild, 'jmix:nodeReference')}">
+                    <template:addCacheDependency uuid="${subSubChild.properties['j:node'].string}"/>
+                </c:if>
             </c:if>
-        </c:if>
-        <li class="widget" id="${subchild.path}">
-            <div class="widget-head">
-                <h3>${subchild.displayableName}</h3>
-            </div>
-            <div class="widget-content" id="widget${subchild.UUID}">
-                <template:module node="${subchild}" view="${moduleMap.subNodesView}">
-                    <template:param name="widgetContentId" value="${subchild.UUID}"/>
-                    <template:param name="widgetContentPrefix" value="widget"/>
-                </template:module>
-            </div>
-        </li>
+            <li class="widget" id="${subchild.path}">
+                <div class="widget-head">
+                    <h3>${subchild.displayableName}</h3>
+                </div>
+                <div class="widget-content" id="widget${subchild.UUID}">
+                    <template:module node="${subchild}" view="${moduleMap.subNodesView}">
+                        <template:param name="widgetContentId" value="${subchild.UUID}"/>
+                        <template:param name="widgetContentPrefix" value="widget"/>
+                    </template:module>
+                </div>
+            </li>
+        </c:catch>
     </c:forEach>
 </c:if>
 <c:if test="${renderContext.editMode}">
-    <li class="widget"><fmt:message
+    <li class="widget color-box"><fmt:message
             key="label.widget.column"/>&nbsp;${fn:substring(currentNode.name,6,7)}</li>
     <c:forEach items="${currentNode.nodes}" var="subchild">
-        <li class="widget" id="${subchild.path}">
+        <li class="widget color-box" id="${subchild.path}">
             <jcr:node var="n" path="${subchild.properties['j:node'].node}"/>
-            <c:if test="${!empty n}">
-                <template:module node="${subchild}"/>
-            </c:if>
+            <!--c:if test="${!empty n}"-->
+
+            <template:module node="${subchild}" view="">
+                <template:param name="widgetContentId" value="${subchild.UUID}"/>
+                <template:param name="widgetContentPrefix" value="widget"/>
+            </template:module>
+            <!--/c:if-->
         </li>
     </c:forEach>
     <li>
