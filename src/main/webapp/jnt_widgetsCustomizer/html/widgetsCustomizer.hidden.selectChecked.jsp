@@ -67,8 +67,8 @@
 <br />
 <br />
 <div class="row">
-    <input id="submitWidgets"  class="btnSubmit" value="submit" onclick="submitAddWidgets(userWidgets)" />
-    <input class="btnReset" value="reset" onclick="submitResetWidgets(userWidgets)">
+    <input type="button" id="submitWidgets"  class="btnSubmit" value="submit" onclick="submitAddWidgets(userWidgets)" />
+    <input type="submit" class="btnReset" value="reset" onclick="submitResetWidgets(userWidgets)">
 </div>
 <div class="clear"></div>
 <br />
