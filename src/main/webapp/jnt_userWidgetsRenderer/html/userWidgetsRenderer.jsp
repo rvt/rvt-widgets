@@ -11,32 +11,33 @@
 
 <%--@elvariable id="currentUser" type="org.jahia.services.usermanager.JahiaUser"--%>
 <%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
+<%--@elvariable id="widget" type="org.jahia.services.content.JCRNodeWrapper"--%>
 <%--@elvariable id="renderContext" type="org.jahia.services.render.RenderContext"--%>
 
-<c:set var="portalPath" value="rvtwidgets${fn:replace(renderContext.mainResource.node.path,'/','_')}"/>
+<c:set var="widgetPath" value="rvtwidgets${fn:replace(renderContext.mainResource.node.path,'/','_')}"/>
 <jcr:node var="user" path="${renderContext.user.localPath}"/>
-<jcr:node var="portal" path="${user.path}/${portalPath}"/>
+<jcr:node var="portal" path="${user.path}/${widgetPath}"/>
 <c:set var="isLive" value="${currentResource.workspace eq 'live'}"/>
 
 <%
 
     RenderContext renderContext = (RenderContext) request.getAttribute("renderContext");
-    JCRNodeWrapper currentNode=(JCRNodeWrapper)request.getAttribute("currentNode");
+    JCRNodeWrapper currentNode = (JCRNodeWrapper) request.getAttribute("currentNode");
 
     Boolean isLive = (Boolean) pageContext.getAttribute("isLive");
     if (isLive) { // only create portals in live mode
         JCRNodeWrapper portal = (JCRNodeWrapper) pageContext.getAttribute("portal");
         if (portal == null) { // Only create a portal if there was no portal
             String user = (String) renderContext.getUser().getLocalPath();
-            String portalPath = (String) pageContext.getAttribute("portalPath");
-            JCRNodeWrapper defaultWidget=(JCRNodeWrapper) currentNode.getProperty("defaultWidget").getNode();
-            JCRNodeWrapper userNode=currentNode.getSession().getNode(user);
+            String widgetPath = (String) pageContext.getAttribute("widgetPath");
+            JCRNodeWrapper defaultWidget = (JCRNodeWrapper) currentNode.getProperty("defaultWidget").getNode();
+            JCRNodeWrapper userNode = currentNode.getSession().getNode(user);
 
-            if (defaultWidget!=null && StringUtils.isNotEmpty(defaultWidget.getPath())) {
-                defaultWidget.copy(userNode, portalPath, false);
+            if (defaultWidget != null && StringUtils.isNotEmpty(defaultWidget.getPath())) {
+                defaultWidget.copy(userNode, widgetPath, false);
                 defaultWidget.getSession().save();
             } else {
-                userNode.addNode("portalPath", "jnt:widgetsRenderer");
+                userNode.addNode("widgetPath", "jnt:widgetsRenderer");
                 userNode.getSession().save();
             }
         }
@@ -44,13 +45,62 @@
 
 %>
 
-<jcr:node var="portal" path="${user.path}/${portalPath}"/>
-<template:addCacheDependency flushOnPathMatchingRegexp="\Q${portal.path}\E/.*" />
+<jcr:node var="widget" path="${user.path}/rvtwidgets${fn:replace(renderContext.mainResource.node.path,'/','_')}" />
+
+<template:addResources type="javascript"
+                       resources="jquery.js,widgetSupport.js"/>
+
+<c:if test="${not renderContext.editMode}">
+
+<template:addResources type="inline">
+    <script type="text/javascript">
+        var baseUrl = '<c:url value="${url.base}"/>';
+    function resetWidgetsFromUser() {
+    data = {}
+    data["widgetPath"] = "${widgetPath}";
+    data["user"] = "${renderContext.user.localPath}";
+    data["source"] = "${currentNode.properties.defaultWidget.node.path}";
+    $.post("<c:url value='${url.base}${widget.path}.resetWidgets.do'/>", data, function (data) {
+    window.location.reload();
+    }, 'json');
+    }
+
+    function addWidgetsToUser(userWidgets, columns) {
+    json = JSON.stringify(userWidgets);
+    data = {}
+    data["widgetPath"] = "${widgetPath}";
+    data["user"] = "${renderContext.user.localPath}";
+    data["widgets"] = json;
+    data["columns"] = ${widget.properties.columns.string};
+    $.post("<c:url value='${url.base}${widget.path}.assignWidgets.do'/>", data, function (data) {
+    window.location.reload();
+    }, 'json');
+    }
+    </script>
+
+</template:addResources>
+</c:if>
+
+
+<template:addResources type="inline">
+
+<c:if test="${currentNode.properties.sameHeight.boolean}">
+    <script>
+    $(document).ready(function() {
+    fixWidgetHeight('${currentNode.properties.widgetWrapper.string}');
+    });
+    </script>
+</c:if>
+</template:addResources>
+
+<jcr:node var="portal" path="${user.path}/${widgetPath}"/>
+<template:addCacheDependency flushOnPathMatchingRegexp="\Q${portal.path}\E/.*"/>
 <template:addResources type="javascript" resources="jquery.js"/>
 
 <c:if test="${isLive}">
     <c:if test="${not empty portal}">
-        <template:module path="${user.path}/rvtwidgets${fn:replace(renderContext.mainResource.node.path,'/','_')}" editable="false"/>
+        <template:module path="${user.path}/rvtwidgets${fn:replace(renderContext.mainResource.node.path,'/','_')}"
+                         editable="false"/>
     </c:if>
 </c:if>
 

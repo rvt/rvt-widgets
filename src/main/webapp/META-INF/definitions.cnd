@@ -18,7 +18,15 @@
  - componentsFolder (weakreference, picker) < jnt:contentFolder
  - customizeLabel (String) = 'Customize' i18n indexed=no
  - customizePopupText (string, richtext) i18n indexed=no
+ - customizeEmtyList (string, richtext) i18n indexed=no
+ - selectionMethod (String, choicelist[resourceBundle]) = 'hidden.select' indexed=no < 'hidden.select', 'hidden.selectChecked'
+ - minimumNumberOfWidgets (long) = 3 autocreated
+ - maximumNumberOfWidgets (long) = 6 autocreated
+ - displayWarningMessages (boolean) = true autocreated
+ - allowRemovable (boolean) = true autocreated
+ - allowMovable (boolean) = true autocreated
 
 [jnt:userWidgetsRenderer] > jmix:siteComponent, jnt:content
  - defaultWidget (weakreference, picker[type="widgetsRenderer"]) < jnt:widgetsRenderer
-
+ - sameHeight (boolean) = true autocreated
+ - widgetWrapper (string) = 'widget' autocreated

@@ -17,26 +17,32 @@
 <c:set var="writeable" value="${currentResource.workspace eq 'live'}"/>
 <template:addResources type="css" resources="jquery.colorbox.css,widgets.css"/>
 
-<c:if test="${writeable && not empty portal}">
 
+<c:if test="${writeable && not empty portal}">
     <template:addResources type="javascript"
                            resources="jquery.js,jquery-ui.min.js,inettuts.portal.js,ajaxreplace.js,jquery.colorbox.js"/>
+</c:if>
 
-    <template:addResources type="inline">
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $(".customizeWidget").colorbox();
-                iNettuts.addWidgetControls( );
-                iNettuts.makeSortable();
-            });
-        </script>
-    </template:addResources>
+<fmt:message var="jnt_widgets_delete_minimumWidgetsReached" key="jnt_widgets.delete.minimumWidgetsReached"><fmt:param value="${currentNode.properties.minimumNumberOfWidgets.string}"/></fmt:message>
 
+<c:if test="${not renderContext.editMode}">
+<script>
+    var jnt_widgets_delete_minimumWidgetsReached = "${jnt_widgets_delete_minimumWidgetsReached}"
+    $(document).ready(function () {
+        $(".customizeWidget").colorbox();
+        iNettuts.settings.widgetDefault.movable=${currentNode.properties.allowMovable.boolean?'true':'false'};
+        iNettuts.settings.widgetDefault.removable=${currentNode.properties.allowRemovable.boolean?'true':'false'};
+        iNettuts.addWidgetControls( );
+        iNettuts.makeSortable();
+    });
+
+</script>
 </c:if>
 
 <c:if test="${writeable}">
     <c:url var="myUrl" value="${url.base}${currentNode.path}.select.html.ajax">
         <c:param name="path" value="${currentNode.properties.componentsFolder.node.path}"/>
+        <c:param name="portal" value="${portal.path}"/>
     </c:url>
 </c:if>
 

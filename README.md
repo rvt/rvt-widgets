@@ -37,6 +37,11 @@ Module Status
 =============
 This module is currently in beta, it is used in a project, but not deployed yet at large scale.
 
+TODO
+====
+Test for the number of widgets during removal when allowRemovable is selected, this correctly done in selectChecked view
+Code Cleanup...
+
 
 R. van Twisk
 http://riesvantwisk.com

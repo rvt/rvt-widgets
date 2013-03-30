@@ -14,17 +14,12 @@ var iNettuts = {
         contentSelector: '.widget-content',
         widgetDefault : {
             movable: true,
-            removable: true,
-            collapsible: false,
-            editable: false,
-            colorClasses : ['color-yellow', 'color-red', 'color-blue', 'color-white', 'color-orange', 'color-green']
+            removable: true
         },
         widgetIndividual : {
             intro : {
                 movable: false,
-                removable: false,
-                collapsible: false,
-                editable: false
+                removable: false
             }
         }
     },
@@ -72,69 +67,8 @@ var iNettuts = {
                     return false;
                 }).appendTo($(settings.handleSelector, this));
             }
-            
-            if (thisWidgetSettings.editable) {
-                $('<a href="#" class="edit">EDIT</a>').mousedown(function (e) {
-                    e.stopPropagation();    
-                }).toggle(function () {
-                    $(this).css({backgroundPosition: '-66px 0', width: '55px'})
-                        .parents(settings.widgetSelector)
-                            .find('.edit-box').show().find('input').focus();
-                    return false;
-                },function () {
-                    $(this).css({backgroundPosition: '', width: ''})
-                        .parents(settings.widgetSelector)
-                            .find('.edit-box').hide();
-                    return false;
-                }).appendTo($(settings.handleSelector,this));
-                $('<div class="edit-box" style="display:none;"/>')
-                    .append('<ul><li class="item"><label>Change the title?</label><input value="' + $('h3',this).text() + '"/></li>')
-                    .append((function(){
-                        var colorList = '<li class="item"><label>Available colors:</label><ul class="colors">';
-                        $(thisWidgetSettings.colorClasses).each(function () {
-                            colorList += '<li class="' + this + '"/>';
-                        });
-                        return colorList + '</ul>';
-                    })())
-                    .append('</ul>')
-                    .insertAfter($(settings.handleSelector,this));
-            }
-            
-            if (thisWidgetSettings.collapsible) {
-                $('<a href="#" class="collapse">COLLAPSE</a>').mousedown(function (e) {
-                    e.stopPropagation();    
-                }).toggle(function () {
-                    $(this).css({backgroundPosition: '-38px 0'})
-                        .parents(settings.widgetSelector)
-                            .find(settings.contentSelector).hide();
-                    return false;
-                },function () {
-                    $(this).css({backgroundPosition: ''})
-                        .parents(settings.widgetSelector)
-                            .find(settings.contentSelector).show();
-                    return false;
-                }).prependTo($(settings.handleSelector,this));
-            }
+
         });
-        
-        $('.edit-box').each(function () {
-            $('input',this).keyup(function () {
-                $(this).parents(settings.widgetSelector).find('h3').text( $(this).val().length>20 ? $(this).val().substr(0,20)+'...' : $(this).val() );
-            });
-            $('ul.colors li',this).click(function () {
-                
-                var colorStylePattern = /\bcolor-[\w]{1,}\b/,
-                    thisWidgetColorClass = $(this).parents(settings.widgetSelector).attr('class').match(colorStylePattern)
-                if (thisWidgetColorClass) {
-                    $(this).parents(settings.widgetSelector)
-                        .removeClass(thisWidgetColorClass[0])
-                        .addClass($(this).attr('class').match(colorStylePattern)[0]);
-                }
-                return false;
-                
-            });
-        });
-        
     },
     
     attachStylesheet : function (href) {
@@ -229,7 +163,7 @@ var iNettuts = {
                 */
 
                 $.post(url+node+".move.do", data, function(result) {
-                    ui.item[0].id= data["target"] + ui.item[0].i&d.substr(ui.item[0].id.lastIndexOf("/"),ui.item[0].id.length);
+                    ui.item[0].id= data["target"] + ui.item[0].id.substr(ui.item[0].id.lastIndexOf("/"),ui.item[0].id.length);
                 }, "json");
             }
         });

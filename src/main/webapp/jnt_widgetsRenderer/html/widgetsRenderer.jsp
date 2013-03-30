@@ -20,30 +20,12 @@
     <fmt:message key="label.widget.only.live"/>
 </c:if>
 
+
 <template:addResources type="css" resources="jquery.colorbox.css,widgets.css"/>
 
     <template:addResources type="javascript"
-                           resources="jquery.js,jquery-ui.min.js,inettuts.portal.js,ajaxreplace.js,jquery.colorbox.js"/>
+                           resources="jquery.js,jquery-ui.min.js,inettuts.portal.js,ajaxreplace.js,jquery.colorbox.js,widgetSupport.js"/>
 
-    <template:addResources>
-        <script type="text/javascript">
-            var baseUrl = '<c:url value="${url.base}"/>';
-        </script>
-    </template:addResources>
-
-    <template:addResources>
-        <script type="text/javascript">
-            function addWidget(source, newName) {
-                var data = {};
-                data["source"] = source;
-                data["target"] = "${currentNode.path}/column1";
-                data["newName"] = newName;
-                $.post("<c:url value='${url.base}${currentNode.path}/column1.assignWidget.do'/>", data, function (data) {
-                    window.location.reload();
-                }, 'json');
-            }
-        </script>
-    </template:addResources>
     <!--refresh needed on class="btn-slide active" window.location='<c:url value="${url.base}${currentNode.path}.html"/>';-->
 
     <div id="columns">
