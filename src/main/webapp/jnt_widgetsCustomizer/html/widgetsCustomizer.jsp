@@ -29,7 +29,10 @@
 <script>
     var jnt_widgets_delete_minimumWidgetsReached = "${jnt_widgets_delete_minimumWidgetsReached}"
     $(document).ready(function () {
-        $(".customizeWidget").colorbox();
+        $(".customizeWidget").colorbox({
+                opacity:0.7
+            }
+        );
         iNettuts.settings.widgetDefault.movable=${currentNode.properties.allowMovable.boolean?'true':'false'};
         iNettuts.settings.widgetDefault.removable=${currentNode.properties.allowRemovable.boolean?'true':'false'};
         iNettuts.addWidgetControls( );
